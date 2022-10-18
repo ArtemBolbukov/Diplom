@@ -14,6 +14,7 @@ namespace ShoppingCart.Areas.Admin.Controllers
                 private readonly DataContext _context;
                 private readonly IWebHostEnvironment _webHostEnvironment;
 
+
                 public ProductsController(DataContext context, IWebHostEnvironment webHostEnvironment)
                 {
                         _context = context;
@@ -27,7 +28,11 @@ namespace ShoppingCart.Areas.Admin.Controllers
                         ViewBag.PageRange = pageSize;
                         ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Products.Count() / pageSize);
 
-                        return View(await _context.Products.OrderByDescending(p => p.Id)                                                                                       .ToListAsync());
+                        return View(await _context.Products.OrderByDescending(p => p.Id)
+                                                                                        .Include(p => p.Category)
+                                                                                        .Skip((p - 1) * pageSize)
+                                                                                        .Take(pageSize)
+                                                                                        .ToListAsync());
                 }
 
                 public IActionResult Create()

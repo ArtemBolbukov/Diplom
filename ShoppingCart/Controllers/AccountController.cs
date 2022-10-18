@@ -5,6 +5,7 @@ using ShoppingCart.Models.ViewModels;
 
 namespace ShoppingCart.Controllers
 {
+        
         public class AccountController : Controller
         {
                 private UserManager<AppUser> _userManager;
